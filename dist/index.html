@@ -63,7 +63,6 @@
                                 </div>
                             </div>
                         </form>
-                            
                             <div class="col-sm-5 my-1" style="margin-left: 15px;">
                                 <div class="input-group">
                                 <input class="form-control" type="search" placeholder="Pesquisar por nome do curso" aria-label="Search" style="border-right: none;">
@@ -115,13 +114,15 @@
                                 
                              </div>
                              <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
-                                 <a href="#" class="btn btn-danger" onclick="comprar()">
+                                 <a href="#" class="btn btn-danger" id="modalVerCart" 
+                                 data-toggle="modal" data-target="#verCartModal">
                                     
-                                     <img src="img/icons/carrinho.png" alt="Carrinho" width="40">
+                                     <img src="img/icons/carrinho.png" alt="Carrinho" width="25">
                                      
                                      Comprar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                  </a>
-                             </div>
+                                 
+                            </div>
                             </form>
       
                          </div>
@@ -134,7 +135,7 @@
                     </div>
 
   
-  <!-- Modal -->
+  <!-- detalhe Modal -->
   <div class="modal fade" id="detalheModal" tabindex="-1" role="dialog" aria-labelledby="detalheModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content" >
@@ -144,28 +145,49 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+      
+        <form id="form-detalhe">
+      
         <div class="modal-body">
-            <div class="painel-curso">
-                
-                <img src="img/php.png" alt="Curos de composer" width="230" height="200">
 
-                <div class="descricao-cursos">
-                    <p>Curso de php</p>
-                    <p style="display: inline;">
-                        Valor R$.
-                        <input type="text" name="valor_curso" id="valor_curso" value="230" style="background: #f2f2f2;border:none"  size="12">
-                    </p> 
-                   
-
-                </div>
-                </div>
+            <div id="painel-detalhe-modal">
+            </div>
         </div>
         <div class="modal-footer">
        
           <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
-            <a href="#" class="btn btn-success" onclick="addCarrinho()">
+            <a href="#" class="btn btn-success" onclick="addCarrinho(this)">
                 
                 Adicionar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </a>
+        </div>
+       </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ver cart Modal -->
+  <div class="modal fade" id="verCartModal" tabindex="-1" role="dialog" 
+  aria-labelledby="verCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="verCartModalLabel">Detalhe do Curso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="painel-curso-modal">
+            </div>
+        </div>
+        <div class="modal-footer">
+       
+          <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
+            <a href="pagamento" class="btn btn-success">
+                
+                Pagar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
             </a>
         </div>
 
@@ -173,6 +195,7 @@
       </div>
     </div>
   </div>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -193,19 +216,87 @@
         <script src="js/app.js"></script>
 <script>
 
-var valor_compra = localStorage.getItem('valor_compra');
 
-$('#valor_compra').val(valor_compra);
+class Cart {
+ 
+    createCart(){
 
+        let cart = {items:[]};
+        
+        (new GuardaLocal).setData('cart',cart);
+        
+        return cart; 
+    }
 
-$('#detalheModal').on('shown.bs.modal', function (event) {
-    $('#myInput').trigger('focus');
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('id')     
-    console.log(id);
-})
+    getCart(){
+        
+        let cart = (new GuardaLocal).getData('cart');
+    //alert(cart);    
+        if ( cart == null ) {
+            return this.createCart();
+        }
 
-// Initializing a class definition
+        return cart;
+    }
+ 
+    addPedido(pedido) {
+
+        let cart = this.getCart();
+        
+        (new GuardaLocal).setCart(cart);
+        
+        return cart;
+    }
+
+    removeCurso(curso){
+        
+        let cart = this.getCart();
+        
+        (new GuardaLocal).setData('cart',cart);
+        
+        return cart;
+    }
+    
+    total(){
+        let cart = this.getCart();
+        let sum = 0;
+        for (let i = 0; i < cart.items.length; i++) {
+            sum += (cart.items[i].curso.valor);
+            
+        }
+        return sum;
+    }
+}
+
+class GuardaLocal{
+
+    getData(item){
+//localStorage.removeItem('cart');
+        let data = localStorage.getItem(item);
+        
+        if ( data == null ) {
+            
+            return null;
+
+        }else{
+//console.log('teste',data,item);
+            return JSON.parse(data);
+        
+        }
+    }
+
+    setData(item,dados) {
+        if (dados == null) {
+            localStorage.removeItem(item);
+        }
+        else {
+            alert(item+' : '+JSON.stringify(dados));
+            localStorage.setItem(item, JSON.stringify(dados));
+        }
+    }
+    
+}
+
 class Curso {
  
     constructor(id,nome,valor){
@@ -218,15 +309,29 @@ class Curso {
 
 class Request {
  
-    getBuscar(rota){
+    getBuscar(rota,item){
         $.ajax({
         type:"GET",
         url: rota,
         dataType:'json',
         success : function(data)
         {
+            
+            (new GuardaLocal).setData(item,data);
+        }
+        });
+    }
+
+    postSalvar(rota,dados){
+        $.ajax({
+        type:"POST",
+        url: rota,
+        data:dados,
+        dataType:'json',
+        success : function(data)
+        {
             var data =  JSON.stringify(data);
-            localStorage.setItem('lista', data);
+            alert(data);
         }
         });
     }
@@ -236,12 +341,13 @@ class Request {
 class Page{
 
     listar(){
+
         var div = document.getElementById("painel-li");
             
-        var lista_cursos = localStorage.getItem('lista');
-        var lista = JSON.parse(lista_cursos); 
+        var lista_cursos = (new GuardaLocal).getData('lista');
+
         var texto = "";
-        $.each(lista.cursos, function( index, curso ) {
+        $.each(lista_cursos.cursos, function( index, curso ) {
          
             texto +=`<li><div class="painel-curso">
             <img src="img/${ curso.url_img }" alt="Curso de ${ curso.nome }" 
@@ -259,19 +365,114 @@ class Page{
         div.innerHTML = texto;
 
     }
+    
+    listarCompras(){
+
+        var div = document.getElementById("painel-li");
+            
+    //    var cart = (new GuardaLocal).getData('cart');
+         
+        var texto = "";
+        $.each(lista, function( index, cart ) {
+         
+            texto +=`<li><div class="painel-curso">
+            <p>${cart.nome}</p>
+            <p>${cart.valor}</p>
+            <button type="button" class="btn btn-primary" id="btn_${curso.id}">Remover</button>
+            </div>
+            </li>`;
+                    
+        });
+
+        div.innerHTML = texto;
+
+    }
+    
+    mostrarDetelhe(){
+    
+        var div = document.getElementById("painel-detalhe-modal");
+        
+        var curso = (new GuardaLocal).getData('detalhe');
+        
+        console.log(curso);        
+        
+        var texto =`<div class="painel-descricao"><img src="img/${curso.url_img}" 
+            alt="Curos de composer" width="230" height="200">
+            <input type="hidden" name="id_curso" id="id_curso" value="${curso.id}">
+            
+            <div class="descricao-cursos">
+            <p>
+            <input type="text" name="nome_curso" id="nome_curso" 
+            value="${curso.nome}" style="background: #f2f2f2;border:none"  size="12">
+            </p>
+            <p style="display: inline;">Valor R$.
+            <input type="text" name="valor_curso" id="valor_curso" 
+            value="${curso.valor}" style="background: #f2f2f2;border:none"  size="12">
+            </p>
+            </div></div>`;
+    
+            div.innerHTML = texto;
+            
+    }
+    
+
 }
 
+function addCarrinho(){
 
-//var curso = new Curso("1","php","100");
+    var form = document.querySelector("#form-detalhe");
 
-var listar = new Request;
-listar.getBuscar('http://localhost:8000/cursos');
-//alert('teste'+curso.nome);
-var pag = new Page;
-pag.listar();
+    var form = new FormData(form);
+
+    var pedidos ={"usuario_id":1, 
+    "cursos": [{
+        id:form.get('id_curso'),
+        nome:form.get('nome_curso'),
+        valor:form.get('valor_curso')
+        }]
+    };
+
+    var cart = new Cart;
+
+    cart.addCurso(pedidos);
+
+}
+
+//let cart = [{id:1,nome:"PHP"},{id:2,nome:"Java"}]
+
+//localStorage.setItem('cart',cart);
+var res = new Request;
+res.getBuscar('http://localhost:8000/cursos','lista');
+//res.getBuscar('http://localhost:8000/carrinho','lista');
+
+var pagina = new Page;
+pagina.listar();
+
+
+//var valor_compra = localStorage.getItem('valor_compra');
+
+//$('#valor_compra').val(valor_compra);
+
+$('#detalheModal').on('shown.bs.modal', function (event) {
+    //$('#myInput').trigger('focus');
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+    
+    (new Request).getBuscar('http://localhost:8000/cursos/'+id,'detalhe');
+
+    (new Page).mostrarDetelhe();
+        
+});
+
+$('#verCartModal').on('shown.bs.modal', function (event) {
+   // $('#myInput').trigger('focus');
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+   //(new Page).listarCompras();    
+});
+
+
 
 </script>
-    
-        
     </body>
 </html>
