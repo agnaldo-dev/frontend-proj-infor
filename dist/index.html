@@ -156,7 +156,7 @@
         <div class="modal-footer">
        
           <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
-            <a href="#" class="btn btn-success" onclick="addCarrinho(this)">
+            <a href="#" class="btn btn-success" onClick="addCarrinho()">
                 
                 Adicionar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
             </a>
@@ -217,44 +217,48 @@
 <script>
 
 
-class Cart {
+class Pedido {
  
-    createCart(){
+    createPedido(){
 
-        let cart = {items:[]};
+        let pedido = {items:[]};
         
-        (new GuardaLocal).setData('cart',cart);
+        (new GuardaLocal).setData('pedido_cursos',pedido);
         
-        return cart; 
+        return pedido; 
     }
 
-    getCart(){
+    getPedido(){
         
-        let cart = (new GuardaLocal).getData('cart');
+        let pedido = (new GuardaLocal).getData('pedido_cursos');
     //alert(cart);    
-        if ( cart == null ) {
-            return this.createCart();
+        if ( pedido == null ) {
+            return this.createPedido();
         }
 
-        return cart;
+        return pedido;
     }
  
-    addPedido(pedido) {
+    addPedido(pedido_cursos) {
 
-        let cart = this.getCart();
+        let pedido = this.getPedido();
+
+        pedido.items.push(pedido_cursos);
         
-        (new GuardaLocal).setCart(cart);
+        (new GuardaLocal).setData('pedido_cursos',pedido);
         
-        return cart;
+        return pedido;
     }
 
-    removeCurso(curso){
+    removeCurso(curso_remo){
         
-        let cart = this.getCart();
+        let pedido = this.getPedido();
+
+        pedido.items.removeItem("id",curso_remo.id);   
         
-        (new GuardaLocal).setData('cart',cart);
+        (new GuardaLocal).setData('pedido_cursos',pedido);
         
-        return cart;
+        return pedido;
     }
     
     total(){
@@ -290,7 +294,7 @@ class GuardaLocal{
             localStorage.removeItem(item);
         }
         else {
-            alert(item+' : '+JSON.stringify(dados));
+          //  alert(item+' : '+JSON.stringify(dados));
             localStorage.setItem(item, JSON.stringify(dados));
         }
     }
@@ -418,24 +422,27 @@ class Page{
 
 }
 
-function addCarrinho(){
+function addCarrinho(obj){
 
     var form = document.querySelector("#form-detalhe");
 
     var form = new FormData(form);
 
-    var pedidos ={"usuario_id":1, 
-    "cursos": [{
+    var pedido_cursos = {
         id:form.get('id_curso'),
         nome:form.get('nome_curso'),
         valor:form.get('valor_curso')
-        }]
-    };
-
-    var cart = new Cart;
-
-    cart.addCurso(pedidos);
-
+        };
+    
+    
+    var pedido = new Pedido;
+    
+    //pedido.addPedido(pedido_cursos);
+   
+   pedido.removeCurso(pedido_cursos);
+   
+    window.location.href = 'index.html';
+    
 }
 
 //let cart = [{id:1,nome:"PHP"},{id:2,nome:"Java"}]
@@ -463,15 +470,6 @@ $('#detalheModal').on('shown.bs.modal', function (event) {
     (new Page).mostrarDetelhe();
         
 });
-
-$('#verCartModal').on('shown.bs.modal', function (event) {
-   // $('#myInput').trigger('focus');
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('id');
-   //(new Page).listarCompras();    
-});
-
-
 
 </script>
     </body>
