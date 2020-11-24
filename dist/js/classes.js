@@ -64,7 +64,7 @@ class GuardaLocal{
             return null;
 
         }else{
-          
+     //     alert('data = '+data);
             data = atob(data);
             
             return JSON.parse(data);
@@ -93,7 +93,6 @@ class Login {
        var token = (new GuardaLocal).getData('token');
       
        if(token=='' || token==null){
-        alert('teste = '+token);
           return true;
        }
 
@@ -116,7 +115,7 @@ class Request {
  
     getBuscar(rota,item){
         
-    //    this.login();
+        this.login();
 
         $.ajax({
         type:"GET",
@@ -131,7 +130,7 @@ class Request {
 
     postSalvar(rota,dados){
         
-      //  this.login();
+        this.login();
     
         $.ajax({
         type:"POST",
@@ -141,63 +140,40 @@ class Request {
         success : function(data)
         {
             var data =  JSON.stringify(data);
-            alert(data);
         }
         });
     }
-/*
-    buscarLogin(){
-    
-        $.ajax({
-        type: "POST",
-        url: 'http://localhost:8000/login',
-        dataType:'json',
-        data: JSON.stringify({email:"agnaldo@sts.com",senha:"12345"}),
-     
-        success : function(data)
-        {
-            var data =  JSON.stringify(data);
-            alert(data);
-        },
-        error: function (error) {
-            alert('autorization'+request.getResponseHeader('Authorization'));
-            alert('Erro no login');
-        }
-        });
 
-    }
-*/
-    buscaLogin(){
+    buscaLogin(rota,user){
     
         $.ajax({
         type: "POST",
-        url: 'http://localhost:8000/login',
+        url: rota,
         processData: false, 
         dataType:'json',
-        data: JSON.stringify({email:"agnaldo@sts.com",senha:"12345"}),
+        data: JSON.stringify(user),
         cache: false,
         timeout: 600000,
 
-        success: function (data, textStatus, request, response) {
-            alert('sucesso');
-            alert('Autorization'+request.getResponseHeader('Authorization'));
-            alert(request.getAllResponseHeaders());
+        success: function (data) 
+        {
+            var data = JSON.parse(data.Authenticate);
+            (new GuardaLocal).setData('token',data.Token);
+            alert('sucess');   
         },
-        error: function (request, textStatus, errorThrown, response) {
-            alert(request.getResponseHeader('Authorization'));
-            alert('Erro');
+        error: function () {
+            (new GuardaLocal).setData('token','');
+        alert('error');
         }
         });
 
     }
     
     login(){
-
-       
-        
+    
         if((new Login).getLogin()){
 
-          //  window.location.href = 'login.html';
+            window.location.href = 'login.html';
 
         }
     }
@@ -316,6 +292,21 @@ class Page{
     
             div.innerHTML = texto;
             
+    }
+
+    home(){
+        var local = new GuardaLocal;
+        var token = local.getData('token');
+        var page = 'index.html';
+
+     alert('teste = '+token);
+           if(token == '' || token==null){
+
+            page = 'login.html';
+
+        }
+ 
+        window.location.href = page;
     }
  
 }
