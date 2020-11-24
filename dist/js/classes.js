@@ -59,12 +59,14 @@ class GuardaLocal{
 
     getData(item){
         let data = localStorage.getItem(item);
-        
-        if ( data == null ) {
-            
+       
+        if ( data == '' ) {
             return null;
 
         }else{
+          
+            data = atob(data);
+            
             return JSON.parse(data);
         
         }
@@ -75,10 +77,29 @@ class GuardaLocal{
             localStorage.removeItem(item);
         }
         else {
-            localStorage.setItem(item, JSON.stringify(dados));
+            dados = JSON.stringify(dados);
+            dados = btoa(dados);
+         //   alert(dados);
+            localStorage.setItem(item, dados);
         }
     }
     
+}
+
+class Login {
+    
+    getLogin(){
+
+       var token = (new GuardaLocal).getData('token');
+      
+       if(token=='' || token==null){
+        alert('teste = '+token);
+          return true;
+       }
+
+       return false;
+    }
+
 }
 
 class Curso {
@@ -94,19 +115,24 @@ class Curso {
 class Request {
  
     getBuscar(rota,item){
+        
+    //    this.login();
+
         $.ajax({
         type:"GET",
         url: rota,
         dataType:'json',
         success : function(data)
         {
-            
             (new GuardaLocal).setData(item,data);
         }
         });
     }
 
     postSalvar(rota,dados){
+        
+      //  this.login();
+    
         $.ajax({
         type:"POST",
         url: rota,
@@ -118,6 +144,62 @@ class Request {
             alert(data);
         }
         });
+    }
+/*
+    buscarLogin(){
+    
+        $.ajax({
+        type: "POST",
+        url: 'http://localhost:8000/login',
+        dataType:'json',
+        data: JSON.stringify({email:"agnaldo@sts.com",senha:"12345"}),
+     
+        success : function(data)
+        {
+            var data =  JSON.stringify(data);
+            alert(data);
+        },
+        error: function (error) {
+            alert('autorization'+request.getResponseHeader('Authorization'));
+            alert('Erro no login');
+        }
+        });
+
+    }
+*/
+    buscaLogin(){
+    
+        $.ajax({
+        type: "POST",
+        url: 'http://localhost:8000/login',
+        processData: false, 
+        dataType:'json',
+        data: JSON.stringify({email:"agnaldo@sts.com",senha:"12345"}),
+        cache: false,
+        timeout: 600000,
+
+        success: function (data, textStatus, request, response) {
+            alert('sucesso');
+            alert('Autorization'+request.getResponseHeader('Authorization'));
+            alert(request.getAllResponseHeaders());
+        },
+        error: function (request, textStatus, errorThrown, response) {
+            alert(request.getResponseHeader('Authorization'));
+            alert('Erro');
+        }
+        });
+
+    }
+    
+    login(){
+
+       
+        
+        if((new Login).getLogin()){
+
+          //  window.location.href = 'login.html';
+
+        }
     }
 
 }
@@ -156,9 +238,14 @@ class Page{
             
         var compras = (new GuardaLocal).getData('pedido_cursos');
     
+        console.log(compras);
+
         var total = (new Pedido).total(compras);
         if(total==0){
             return false;
+        }
+        if(compras==null){
+           return false;
         }
             var texto = `<div class="form-group">
             <ul class="lista-compras">`;
@@ -185,7 +272,6 @@ class Page{
         var div = document.getElementById("painel-pedidos-cusos");
             
         var compras = (new GuardaLocal).getData('pedido_cursos');
-        
         if(compras==null){
           return false;
         }
@@ -212,9 +298,7 @@ class Page{
         var div = document.getElementById("painel-detalhe-modal");
         
         var curso = (new GuardaLocal).getData('detalhe');
-        
-        console.log(curso);        
-        
+           
         var texto =`<div class="painel-descricao"><img src="img/${curso.url_img}" 
             alt="Curos de composer" width="230" height="200">
             <input type="hidden" name="id_curso" id="id_curso" value="${curso.id}">

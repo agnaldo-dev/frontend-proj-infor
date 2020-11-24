@@ -90,3 +90,16 @@ $('#verCartModal').on('shown.bs.modal', function (event) {
     (new Page).listarCompras();
 
 });
+
+var user = {
+	"email":"agnaldo@sts.com",
+	"senha":"12345"
+};
+
+res.buscaLogin('http://localhost:8000/login');
+//res.getBuscar('http://localhost:8000/login','token');
+var login = (new GuardaLocal).getData('token');
+console.log(login);
+alert('login = '+login);
+
+

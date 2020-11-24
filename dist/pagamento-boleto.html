@@ -9,75 +9,98 @@
         <title>sitemas</title>
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+        <link href="css/app.css" rel="stylesheet" />
     </head>
     <style>
-        body {
-            padding-top: 50px;
+        .painel-form{
+            max-width: 600px;
+            max-height: 500px;
+            height: 30em;
+            margin-top: 50px;
         }
-        #divTotal{
-            background-color:#f2f2f2;
+        .header{
+            padding: 5px;
         }
-        .affix{
-            right: 0px;
-        }
-        .affix-top{
-            right: 0px;
-            position: fixed;
-        }
-        li{
-            display: flex;
-        }
-        .painel-curso{
-            display: flex;
-            border: #cccccc solid 1px;
-            padding-bottom: 2em;
-            width: 500px;
-        }
-        .descricao-cursos{
-            padding: 2em;
-            background: #f2f2f2;
-            border: #cccccc solid 1px;
-        }
-        .painel-pedidos-curso{
-            padding-block: flex;
-        }
-        .valor{
-            
-            padding-top: 10px;
-            font-size: 20px;
-        }
+            </style>
+            <body class="sb-nav-fixed">
+                <div class="container-fluid">
+                    <div class="col">
+                        <main>
+                            <header class="header">
+        
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                <a class="navbar-brand" href="#"></a>
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                  <span class="navbar-toggler-icon"></span>
+                                </button>
+                              
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                  <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item active">
+                                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#">Cursos</a>
+                                    </li>
+                                   
+                                    <li class="nav-item">
+                                      <a class="nav-link disabled" href="#">Disabled</a>
+                                    </li>
+                                  </ul>
+                                
+                                </div>
+                              </nav>
+                    </header>
+                    <div class="painel-form">
 
-        ul li{
-            text-align: inherit;
-            display: flex;
-        }
-
-    </style>
-    
-    <body class="sb-nav-fixed">
-        <div class="container-fluid">
-            <div class="col">
-                <main>
                     <div class="col" style="background: #ffffff; width: auto;">
                         <div class="col-sm-5 my-1" style="margin-left: 15px;">
-                        <h5>Pagamento Boleto</h4>
+                        <h5>Boleto</h4>
                         </div>
                         <form action="">
                             <div class="col-sm-5 my-1" style="margin-left: 15px;">
-                                
-                                         <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
-                                            <a href="#" class="btn btn-success" id="modalVerCart" 
-                                            data-toggle="modal" data-target="#verCartModal">
-                                               
-                                                Gerar boleto<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-                                            </a>
-                                            
-                                       </div>
+                                <div class="input-group">
+                                   
+                                    <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
+                                        <a href="#" class="btn btn-success" id="modalVerCart" 
+                                        data-toggle="modal" data-target="#verCartModal">
+                                           
+                                        
+                                            Gerar Boleto <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                                        </a>
+                                        
+                                   </div>
+                              
+                                <div class="input-group-append">
+                                </div>
+                                </div>
                             </div>
                         </form>
-                        </div>
-                        </main>
-                        </div>
-                        </div>
-                        </body>
+                    </div>
+                
+                    </main>
+                </div>
+        
+                         
+  </div>
+  <footer class="py-4 bg-light mt-auto">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; Your Website 2019</div>
+            <div>
+                <a href="#">Privacy Policy</a>
+                &middot;
+                <a href="#">Terms &amp; Conditions</a>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="js/classes.js"></script>
+
+
+</body>
 </html>
