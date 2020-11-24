@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>sitemas</title>
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+    </head>
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        #divTotal{
+            background-color:#f2f2f2;
+        }
+        .affix{
+            right: 0px;
+        }
+        .affix-top{
+            right: 0px;
+            position: fixed;
+        }
+        li{
+            display: flex;
+        }
+        .painel-curso{
+            display: flex;
+            border: #cccccc solid 1px;
+            padding-bottom: 2em;
+            width: 500px;
+        }
+        .descricao-cursos{
+            padding: 2em;
+            background: #f2f2f2;
+            border: #cccccc solid 1px;
+        }
+
+    </style>
+    
+    <body class="sb-nav-fixed">
+        <div class="container-fluid">
+            <div class="col">
+                <main>
+                    <div class="col" style="background: #ffffff; width: auto;">
+                        <div class="col-sm-5 my-1" style="margin-left: 15px;">
+                        <h5>Categorias</h4>
+                        </div>
+                        <form action="">
+                            <div class="col-sm-5 my-1" style="margin-left: 15px;">
+                                <div class="input-group">
+                                    
+                                <select name="categoria" id="categoria" class="form-control">
+                                    <option value="1">Back End</option>
+                                    <option value="2">Fornt End</option>
+                                    
+                                </select>
+                                <div class="input-group-append">
+                                </div>
+                                </div>
+                            </div>
+                        </form>
+                            <div class="col-sm-5 my-1" style="margin-left: 15px;">
+                                <div class="input-group">
+                                <input class="form-control" type="search" placeholder="Pesquisar por nome do curso" aria-label="Search" style="border-right: none;">
+                                <div class="input-group-append">
+                                    <div class="input-group-text" style="background-color: #FFF"><i class="fas fa-search"></i></div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col" style="background: #ffffff; width: auto;">
+                           
+                            <div class="panel panel-primary">
+                                <div class="painel-busca">
+
+                                </div>
+                                
+                                <div class="panel">
+                                    <ul id="painel-li">
+                                        
+                                    </ul>
+                                </div>
+            
+                            </div><!--./row-->
+                          
+                           </div>
+
+                           
+                           <div class="col-sm-5">
+                            <div class="panel panel-primary" style="border: #cccccc solid 1px;">
+                             <div id="divTotal" class="panel-heading">
+                                 <h3 class="panel-title">Total</h3>
+                             </div>
+                                <form>                       
+                                    <div class="panel-body">
+                                 <div class="painel-lista">
+                                     <ul>
+                                         <li>
+                                             Nenumm curso
+                                         </li>
+                                     </ul>
+                                     <p style="margin: 10px;">R$. 
+                                        <input type="text" name="valor_compra" id="valor_compra" value="0,0" style="border: none;">
+                                    </p>
+                                   
+                                 </div>
+                                
+                             </div>
+                             <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
+                                 <a href="#" class="btn btn-danger" id="modalVerCart" 
+                                 data-toggle="modal" data-target="#verCartModal">
+                                    
+                                     <img src="img/icons/carrinho.png" alt="Carrinho" width="25">
+                                     
+                                     Comprar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                                 </a>
+                                 
+                            </div>
+                            </form>
+      
+                         </div>
+                          
+                        
+                         </div>
+                             
+                        </div><!--./row-->
+                    </main>
+                    </div>
+
+  
+  <!-- detalhe Modal -->
+  <div class="modal fade" id="detalheModal" tabindex="-1" role="dialog" aria-labelledby="detalheModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalheModalLabel">Detalhe do Curso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      
+        <form id="form-detalhe">
+      
+        <div class="modal-body">
+
+            <div id="painel-detalhe-modal">
+            </div>
+        </div>
+        <div class="modal-footer">
+       
+          <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
+            <a href="#" class="btn btn-success" onclick="addCarrinho(this)">
+                
+                Adicionar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </a>
+        </div>
+       </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ver cart Modal -->
+  <div class="modal fade" id="verCartModal" tabindex="-1" role="dialog" 
+  aria-labelledby="verCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="verCartModalLabel">Detalhe do Curso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="painel-curso-modal">
+            </div>
+        </div>
+        <div class="modal-footer">
+       
+          <div class="text-left" style="margin-top: 30px;margin-left: 5px;margin-bottom: 5px;">
+            <a href="pagamento" class="btn btn-success">
+                
+                Pagar <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </a>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2019</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="js/app.js"></script>
+<script>
+
+
+class Cart {
+ 
+    createCart(){
+
+        let cart = {items:[]};
+        
+        (new GuardaLocal).setData('cart',cart);
+        
+        return cart; 
+    }
+
+    getCart(){
+        
+        let cart = (new GuardaLocal).getData('cart');
+    //alert(cart);    
+        if ( cart == null ) {
+            return this.createCart();
+        }
+
+        return cart;
+    }
+ 
+    addPedido(pedido) {
+
+        let cart = this.getCart();
+        
+        (new GuardaLocal).setCart(cart);
+        
+        return cart;
+    }
+
+    removeCurso(curso){
+        
+        let cart = this.getCart();
+        
+        (new GuardaLocal).setData('cart',cart);
+        
+        return cart;
+    }
+    
+    total(){
+        let cart = this.getCart();
+        let sum = 0;
+        for (let i = 0; i < cart.items.length; i++) {
+            sum += (cart.items[i].curso.valor);
+            
+        }
+        return sum;
+    }
+}
+
+class GuardaLocal{
+
+    getData(item){
+//localStorage.removeItem('cart');
+        let data = localStorage.getItem(item);
+        
+        if ( data == null ) {
+            
+            return null;
+
+        }else{
+//console.log('teste',data,item);
+            return JSON.parse(data);
+        
+        }
+    }
+
+    setData(item,dados) {
+        if (dados == null) {
+            localStorage.removeItem(item);
+        }
+        else {
+            alert(item+' : '+JSON.stringify(dados));
+            localStorage.setItem(item, JSON.stringify(dados));
+        }
+    }
+    
+}
+
+class Curso {
+ 
+    constructor(id,nome,valor){
+        this.id = id;
+        this.nome = nome;
+        this.valor = valor;
+    }
+ 
+}
+
+class Request {
+ 
+    getBuscar(rota,item){
+        $.ajax({
+        type:"GET",
+        url: rota,
+        dataType:'json',
+        success : function(data)
+        {
+            
+            (new GuardaLocal).setData(item,data);
+        }
+        });
+    }
+
+    postSalvar(rota,dados){
+        $.ajax({
+        type:"POST",
+        url: rota,
+        data:dados,
+        dataType:'json',
+        success : function(data)
+        {
+            var data =  JSON.stringify(data);
+            alert(data);
+        }
+        });
+    }
+
+}
+
+class Page{
+
+    listar(){
+
+        var div = document.getElementById("painel-li");
+            
+        var lista_cursos = (new GuardaLocal).getData('lista');
+
+        var texto = "";
+        $.each(lista_cursos.cursos, function( index, curso ) {
+         
+            texto +=`<li><div class="painel-curso">
+            <img src="img/${ curso.url_img }" alt="Curso de ${ curso.nome }" 
+            width="230" height="200">
+            <div class="descricao-cursos">
+            <p>${curso.nome}</p>
+            <p>${curso.valor}</p>
+            <button type="button" class="btn btn-primary" id="btn_${curso.id}" 
+            data-toggle="modal" data-target="#detalheModal" data-id="${curso.id}">Detalhe</button>
+            </div></div>
+            </li>`;
+                    
+        });
+
+        div.innerHTML = texto;
+
+    }
+    
+    listarCompras(){
+
+        var div = document.getElementById("painel-li");
+            
+    //    var cart = (new GuardaLocal).getData('cart');
+         
+        var texto = "";
+        $.each(lista, function( index, cart ) {
+         
+            texto +=`<li><div class="painel-curso">
+            <p>${cart.nome}</p>
+            <p>${cart.valor}</p>
+            <button type="button" class="btn btn-primary" id="btn_${curso.id}">Remover</button>
+            </div>
+            </li>`;
+                    
+        });
+
+        div.innerHTML = texto;
+
+    }
+    
+    mostrarDetelhe(){
+    
+        var div = document.getElementById("painel-detalhe-modal");
+        
+        var curso = (new GuardaLocal).getData('detalhe');
+        
+        console.log(curso);        
+        
+        var texto =`<div class="painel-descricao"><img src="img/${curso.url_img}" 
+            alt="Curos de composer" width="230" height="200">
+            <input type="hidden" name="id_curso" id="id_curso" value="${curso.id}">
+            
+            <div class="descricao-cursos">
+            <p>
+            <input type="text" name="nome_curso" id="nome_curso" 
+            value="${curso.nome}" style="background: #f2f2f2;border:none"  size="12">
+            </p>
+            <p style="display: inline;">Valor R$.
+            <input type="text" name="valor_curso" id="valor_curso" 
+            value="${curso.valor}" style="background: #f2f2f2;border:none"  size="12">
+            </p>
+            </div></div>`;
+    
+            div.innerHTML = texto;
+            
+    }
+    
+
+}
+
+function addCarrinho(){
+
+    var form = document.querySelector("#form-detalhe");
+
+    var form = new FormData(form);
+
+    var pedidos ={"usuario_id":1, 
+    "cursos": [{
+        id:form.get('id_curso'),
+        nome:form.get('nome_curso'),
+        valor:form.get('valor_curso')
+        }]
+    };
+
+    var cart = new Cart;
+
+    cart.addCurso(pedidos);
+
+}
+
+//let cart = [{id:1,nome:"PHP"},{id:2,nome:"Java"}]
+
+//localStorage.setItem('cart',cart);
+var res = new Request;
+res.getBuscar('http://localhost:8000/cursos','lista');
+//res.getBuscar('http://localhost:8000/carrinho','lista');
+
+var pagina = new Page;
+pagina.listar();
+
+
+//var valor_compra = localStorage.getItem('valor_compra');
+
+//$('#valor_compra').val(valor_compra);
+
+$('#detalheModal').on('shown.bs.modal', function (event) {
+    //$('#myInput').trigger('focus');
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+    
+    (new Request).getBuscar('http://localhost:8000/cursos/'+id,'detalhe');
+
+    (new Page).mostrarDetelhe();
+        
+});
+
+$('#verCartModal').on('shown.bs.modal', function (event) {
+   // $('#myInput').trigger('focus');
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+   //(new Page).listarCompras();    
+});
+
+
+
+</script>
+    </body>
+</html>

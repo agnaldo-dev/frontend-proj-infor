@@ -1,20 +1,92 @@
+/*** Fucoes para ser chamados nos botoes 
+ * as clases entao no classes.js 
+*/
+function addCarrinho(obj){
 
-function addCarrinho() {
-    
-    var add_valor_compra = $("#valor_compra").val();
-    
-    var valor_curso = $("#valor_curso").val();
-    
-    add_valor_compra = parseFloat(valor_curso)+parseFloat(add_valor_compra);
+    var form = document.querySelector("#form-detalhe");
 
-    localStorage.setItem('valor_compra', add_valor_compra);
-    var l = localStorage.getItem('valor_compra');
+    var form = new FormData(form);
 
-//    alert('teste'+l);
-    window.location = 'index.html';
+    var pedido_cursos = {
+        id:form.get('id_curso'),
+        nome:form.get('nome_curso'),
+        valor:form.get('valor_curso')
+        };
+    
+    var pedido = new Pedido;
+    
+    pedido.addPedido(pedido_cursos);
+
+    window.location.href = 'index.html';
     
 }
 
-function comprar() {
-    alert('comprar');
+function removerItem(id){
+
+    var pedido = new Pedido;
+
+    pedido.removeCurso(id);
+    
+    (new Page).listarCompras(); 
+
 }
+
+
+function fecharModal(){
+
+    window.location.href = 'index.html';
+
+}
+
+function valorCompra(){
+
+    var pedido = new Pedido;
+
+    return pedido.total();
+
+}
+
+function fazerPagamento(){
+    var forma = $("#forma-pagamento").val();
+    var page = "index.html";
+
+     if(forma==1){
+         page = "pagamento-cartao.html";
+
+     }
+     if(forma==2){
+         page = "pagamento-boleto.html"; 
+
+     }
+    
+    window.location.href = page;
+
+}
+
+/** variavei global para inicializar valoes da pagina */
+var res = new Request;
+res.getBuscar('http://localhost:8000/cursos','lista');
+
+var pagina = new Page;
+
+pagina.listar();
+
+pagina.listarPedido();
+
+/** carregamento de conteudo de modal */
+$('#detalheModal').on('shown.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id');
+    
+    (new Request).getBuscar('http://localhost:8000/cursos/'+id,'detalhe');
+
+    (new Page).mostrarDetelhe();
+        
+});
+
+$('#verCartModal').on('shown.bs.modal', function (event) {
+    
+    (new Page).listarCompras();
+
+});
